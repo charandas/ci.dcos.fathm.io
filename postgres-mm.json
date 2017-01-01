@@ -1,0 +1,62 @@
+{
+  "id": "/postgresql-mm",
+  "cpus": 1,
+  "mem": 1024,
+  "instances": 1,
+  "constraints": [
+      [
+          "hostname",
+          "LIKE",
+          "192.168.5.4"
+      ]
+  ],
+  "container": {
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "pgdata",
+        "mode": "RW",
+        "persistent": {
+          "size": 100
+        }
+      }
+    ],
+    "docker": {
+      "image": "postgres:9.6",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 5432,
+          "hostPort": 0,
+          "protocol": "tcp",
+          "labels": {
+            "VIP_0": "/postgresql-mm:5432"
+          }
+        }
+      ]
+    }
+  },
+  "env": {
+    "POSTGRES_USER": "mm",
+    "POSTGRES_PASSWORD": "mm",
+    "POSTGRES_DB": "mm"
+  },
+  "healthChecks": [
+    {
+      "protocol": "TCP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 0,
+    "minimumHealthCapacity": 0
+  },
+  "residency": {
+    "taskLostBehavior": "WAIT_FOREVER"
+  }
+}

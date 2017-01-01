@@ -1,0 +1,16 @@
+{
+    "service": {
+        "name": "jenkins-fathm",
+	"cpus": 0.95
+    },
+    "storage": {
+        "host-volume": "/mnt/share",
+        "pinned-hostname": "192.168.5.5"
+    },
+    "networking": {
+        "known-hosts": "github.com gitlab.fathm.io",
+        "root-url": "https://jenkins.fathm.io",
+        "https-redirect": true,
+        "virtual-host": "jenkins.fathm.io"
+    }
+}
