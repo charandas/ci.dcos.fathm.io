@@ -1,0 +1,49 @@
+{
+  "id": "/letsencrypt-dcos",
+  "cpus": 0.05,
+  "mem": 512,
+  "instances": 1,
+  "env": {
+    "MARATHON_LB_ID": "marathon-lb",
+    "MARATHON_URL": "http://marathon.mesos:8080",
+    "LETSENCRYPT_EMAIL": "charandas108@gmail.com"
+  },
+  "container": {
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "/etc/letsencrypt",
+        "hostPath": "data",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "data",
+        "mode": "RW",
+        "persistent": {
+          "size": 500
+        }
+      }
+    ],
+    "docker": {
+      "image": "mesosphere/letsencrypt-dcos:v1.0.3",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "servicePort": 10000,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  },
+  "labels": {
+    "HAPROXY_0_VHOST": "jenkins.fathm.io,jira.fathm.io,mattermost.fathm.io,chat.fathm.io",
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_PATH": "/.well-known/acme-challenge"
+  },
+  "backoffSeconds": 5,
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0.5,
+    "maximumOverCapacity": 0
+  }
+}

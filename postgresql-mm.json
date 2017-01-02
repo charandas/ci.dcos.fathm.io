@@ -1,39 +1,30 @@
 {
   "id": "/postgresql-mm",
-  "cpus": 1,
+  "cpus": 0.5,
   "mem": 1024,
   "instances": 1,
-  "constraints": [
-      [
-          "hostname",
-          "LIKE",
-          "192.168.5.4"
-      ]
-  ],
   "container": {
     "type": "DOCKER",
-    "volumes": [
-      {
-        "containerPath": "pgdata",
-        "mode": "RW",
-        "persistent": {
-          "size": 100
-        }
-      }
-    ],
     "docker": {
       "image": "postgres:9.6",
       "network": "BRIDGE",
       "portMappings": [
         {
           "containerPort": 5432,
-          "hostPort": 0,
+          "servicePort": 10102,
           "protocol": "tcp",
           "labels": {
             "VIP_0": "/postgresql-mm:5432"
           }
         }
-      ]
+      ],
+      "parameters": [{
+          "key": "volume-driver",
+          "value": "flocker"
+        },{
+          "key": "volume",
+          "value": "postgres-mm-0:/var/lib/postgresql/data"
+        }]
     }
   },
   "env": {
@@ -55,8 +46,5 @@
   "upgradeStrategy": {
     "maximumOverCapacity": 0,
     "minimumHealthCapacity": 0
-  },
-  "residency": {
-    "taskLostBehavior": "WAIT_FOREVER"
   }
 }

@@ -2,15 +2,19 @@
     "ipAddress": {
       "networkName": "dcos"
     },
-    "constraints": [
-        [
-            "hostname",
-            "LIKE",
-            "192.168.5.4"
-        ]
-    ],
     "backoffSeconds": 20,
     "container": {
+        "volumes": [{
+          "containerPath": "mattermost-data",
+          "mode": "RW",
+          "persistent": {
+            "size": 1000
+          }
+        }, {
+          "containerPath": "/mm/mattermost/mattermost-data",
+          "hostPath": "mattermost-data",
+          "mode": "RW"
+        }],
         "docker": {
             "image": "us.gcr.io/fathm-ci/mattermost:3.6",
             "network": "USER",
@@ -26,7 +30,6 @@
     "cpus": 1,
     "id": "mattermost",
     "mem": 2048,
-    "acceptedResourceRoles": ["slave_public"],
     "labels":{
       "HAPROXY_GROUP":"external",
       "HAPROXY_0_VHOST":"chat.fathm.io"
