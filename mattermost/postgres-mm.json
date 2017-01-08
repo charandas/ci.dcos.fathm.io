@@ -1,0 +1,50 @@
+{
+  "id": "/postgres-mm",
+  "cpus": 0.5,
+  "mem": 1024,
+  "instances": 1,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "postgres:9.6",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 5432,
+          "servicePort": 10102,
+          "protocol": "tcp",
+          "labels": {
+            "VIP_0": "/postgres-mm:5432"
+          }
+        }
+      ],
+      "parameters": [{
+          "key": "volume-driver",
+          "value": "flocker"
+        },{
+          "key": "volume",
+          "value": "postgres-mm-0:/var/lib/postgresql/data"
+        }]
+    }
+  },
+  "env": {
+    "POSTGRES_USER": "mm",
+    "POSTGRES_PASSWORD": "mm",
+    "POSTGRES_DB": "mm"
+  },
+  "healthChecks": [
+    {
+      "protocol": "TCP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 0,
+    "minimumHealthCapacity": 0
+  }
+}

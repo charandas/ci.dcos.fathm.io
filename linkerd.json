@@ -1,0 +1,47 @@
+{
+	"namers": [{
+		"kind": "io.l5d.marathon",
+		"host": "leader.mesos",
+		"port": 8080,
+		"prefix": "/io.l5d.marathon",
+		"uriPrefix": "",
+		"experimental": true
+	}],
+	"routers": [{
+		"protocol": "http",
+		"servers": [{
+			"port": 4140,
+			"ip": "0.0.0.0"
+		}],
+		"baseDtab": "/marathonId=>/#/io.l5d.marathon;/http/1.1/*=>/$/io.buoyant.http.domainToPathPfx/marathonId;",
+		"label": "outgoing",
+		"interpreter": {
+			"kind": "default",
+			"transformers": [{
+				"kind": "io.l5d.port",
+				"port": 4141
+			}]
+		}
+	}, {
+		"protocol": "http",
+		"servers": [{
+			"port": 4141,
+			"ip": "0.0.0.0"
+		}],
+		"label": "incoming",
+		"dstPrefix": "/",
+		"identifier": {
+			"kind": "io.l5d.header",
+			"header": "l5d-dst-concrete"
+		},
+		"interpreter": {
+			"kind": "default",
+			"transformers": [{
+				"kind": "io.l5d.localhost"
+			}]
+		}
+	}],
+	"admin": {
+		"port": 9990
+	}
+}

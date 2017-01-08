@@ -1,0 +1,33 @@
+{
+    "ipAddress": {
+      "networkName": "dcos"
+    },
+    "backoffSeconds": 5,
+    "container": {
+        "docker": {
+            "image": "blacklabelops/jira:core.7.2.7",
+            "network": "USER",
+            "portMappings": [
+                {
+                    "containerPort": 8080,
+                    "hostPort": 0
+                }
+            ]
+        },
+        "type": "DOCKER"
+    },
+    "cpus": 1,
+    "id": "jira-fathm",
+    "constraints": [["hostname", "CLUSTER", "192.168.5.5"]],
+    "mem": 1024,
+    "labels":{
+      "HAPROXY_0_VHOST":"jira.fathm.io"
+    },
+    "env": {
+      "JIRA_DATABASE_URL": "postgres://jira@postgres-jira.marathon.l4lb.thisdcos.directory/db",
+      "JIRA_DB_PASSWORD": "#talksurvey"
+    },
+    "uris": [
+       "file:///etc/docker.tar.gz"
+    ]
+}

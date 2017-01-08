@@ -1,12 +1,17 @@
 {
-  "id": "/postgresql-mm",
+  "id": "postgres-jira",
   "cpus": 0.5,
   "mem": 1024,
   "instances": 1,
   "container": {
     "type": "DOCKER",
+    "volumes": [{
+      "containerPath": "/var/lib/postgresql/data",
+      "hostPath": "/mnt/disks/jira/postgres",
+      "mode": "RW"
+    }],
     "docker": {
-      "image": "postgres:9.6",
+      "image": "blacklabelops/postgres:9.5.4-r0",
       "network": "BRIDGE",
       "portMappings": [
         {
@@ -14,23 +19,19 @@
           "servicePort": 10102,
           "protocol": "tcp",
           "labels": {
-            "VIP_0": "/postgresql-mm:5432"
+            "VIP_0": "/postgres-jira:5432"
           }
         }
-      ],
-      "parameters": [{
-          "key": "volume-driver",
-          "value": "flocker"
-        },{
-          "key": "volume",
-          "value": "postgres-mm-0:/var/lib/postgresql/data"
-        }]
+      ]
     }
   },
   "env": {
-    "POSTGRES_USER": "mm",
-    "POSTGRES_PASSWORD": "mm",
-    "POSTGRES_DB": "mm"
+    "POSTGRES_USER": "jira",
+    "POSTGRES_DB": "db",
+    "POSTGRES_PASSWORD": "#talksurvey",
+    "POSTGRES_ENCODING": "UNICODE",
+    "POSTGRES_COLLATE": "C",
+    "POSTGRES_COLLATE_TYPE": "C"
   },
   "healthChecks": [
     {
@@ -43,6 +44,7 @@
       "ignoreHttp1xx": false
     }
   ],
+  "constraints": [["hostname", "CLUSTER", "192.168.5.5"]],
   "upgradeStrategy": {
     "maximumOverCapacity": 0,
     "minimumHealthCapacity": 0

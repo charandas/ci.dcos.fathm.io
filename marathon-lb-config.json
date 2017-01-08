@@ -1,0 +1,10 @@
+{
+  "marathon-lb":{
+    "cpus": 2,
+    "name":"marathon-lb",
+    "haproxy-group":"external",
+    "bind-http-https":true,
+    "role":"",
+    "minimumHealthCapacity": 0
+  }
+}

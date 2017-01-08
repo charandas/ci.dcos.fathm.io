@@ -1,11 +1,15 @@
 {
-    "service": {
-        "name": "jenkins-fathm",
-	"cpus": 0.95
+  "service": {
+      "name": "jenkins-fathm",
+      "cpus": 1.95
+    },
+    "advanced": {
+      "docker-credentials-uri": "/etc/docker.tar.gz",
+      "jvm-opts": "-Xms1024m -Xmx1024m -Dfile.encoding=UTF-8"
     },
     "storage": {
-        "host-volume": "/mnt/share",
-        "pinned-hostname": "192.168.5.5"
+        "host-volume": "/mnt/disks/jenkins",
+        "pinned-hostname": "192.168.5.4"
     },
     "networking": {
         "known-hosts": "github.com gitlab.fathm.io",
