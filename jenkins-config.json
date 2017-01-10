@@ -1,7 +1,7 @@
 {
   "service": {
       "name": "jenkins-fathm",
-      "cpus": 1.95
+      "cpus": 1
     },
     "advanced": {
       "docker-credentials-uri": "/etc/docker.tar.gz",

@@ -7,7 +7,7 @@
     "type": "DOCKER",
     "volumes": [{
       "containerPath": "/var/lib/postgresql/data",
-      "hostPath": "/mnt/disks/jira/postgres",
+      "hostPath": "/mnt/disks/atlassian/jira_postgres",
       "mode": "RW"
     }],
     "docker": {
